@@ -12,6 +12,15 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("CODE App Backend is live!");
 });
+app.get('/test-db', async (req, res) => {
+  try {
+    const result = await db.query('SELECT NOW()');
+    res.json({ success: true, time: result.rows[0].now });
+  } catch (err) {
+    console.error('Database test failed:', err);
+    res.status(500).json({ success: false, error: 'Database connection failed' });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
